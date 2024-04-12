@@ -1,0 +1,26 @@
+:root {
+  --white: #fff;
+  --black: #000;
+  --orange: #f05514;
+  --green: #2ecc71;
+  --transition-base: all 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}/*# sourceMappingURL=base.css.map */
