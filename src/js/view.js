@@ -1,3 +1,4 @@
+import { ENV } from "../config/consts.js";
 import { navComponent } from "../components/navComponent.js";
 import { searchWheaterComponent } from "../components/searchWheaterComponent.js";
 import { Controller } from "./controller.js";
@@ -12,17 +13,18 @@ export class View {
   };
   headerEl = document.querySelector(".header");
   sectionEl = document.querySelector(".section");
-
-  constructor() {
+  bodyEl = document.querySelector("body");
+  /**
+   * @param {Controller} controller
+   */
+  constructor(controller) {
+    this.controller = controller;
     this.pageRendeMethods = {
       favoritePage: () => this.renderFavoritePage(),
       homePage: () => this.renderHomePage(),
     };
   }
 
-  setController(controller) {
-    this.controller = controller;
-  }
   mount(activeNavElemet) {
     this.renderNavElemetns(activeNavElemet);
   }
@@ -43,12 +45,12 @@ export class View {
     });
   }
   renderFavoritePage() {
-    document.title = "weather - favorites";
-    this.sectionEl.innerHTML = '';
+    // todo: pageNames to const
+    document.title = ENV.PAGES_TITLES.FAVORITES;
+    this.sectionEl.innerHTML = "";
   }
   renderHomePage() {
-    document.title = "weather - home";
-    // console.log('this.sectionEl--', this.sectionEl)
+    document.title = ENV.PAGES_TITLES.HOME;
     this.sectionEl.innerHTML = searchWheaterComponent;
     const inputSeacrh = this.sectionEl.querySelector(
       this.ELEMENT_SELECTORS.INPUT_SEARCH
@@ -56,5 +58,62 @@ export class View {
     inputSeacrh.addEventListener("input", (e) =>
       this.controller.inputCityChange(e.target.value)
     );
+  }
+  renderInputResult(data) {
+    console.log(data);
+    const inputResultEl = this.createElemet({
+      tag: "div",
+      className: "input-result",
+    });
+
+    data.forEach((sity) => {
+      const cityItemEl = this.createElemet({
+        tag: "div",
+        className: "input-result__item",
+      });
+
+      const cityCountryEl = this.createElemet({
+        tag: "div",
+        className: "input-result__country",
+        innerHTML: `${sity.Country.LocalizedName}`,
+      });
+
+      const cityNameEl = this.createElemet({
+        tag: "div",
+        className: "input-result__city",
+        innerHTML: `${sity.LocalizedName}`,
+      });
+
+      cityItemEl.appendChild(cityCountryEl);
+      cityItemEl.appendChild(cityNameEl);
+      inputResultEl.appendChild(cityItemEl);
+
+      cityItemEl.addEventListener("click", () => {
+        this.controller.getCityWheater(sity.Key);
+      });
+    });
+    this.sectionEl.querySelector(".input-group").appendChild(inputResultEl);
+
+    this.bodyEl.addEventListener("click", (e) => {
+      const inputGroupEl = this.sectionEl.querySelector(".input-group");
+      const inputEl = this.sectionEl.querySelector(".input");
+      if (inputGroupEl.contains(inputResultEl))
+        inputGroupEl.removeChild(inputResultEl);
+        inputEl.value = "";
+    });
+  }
+
+  /**
+   * @param {{tag: string, className: string, innerHTML: string, attr?: {attrName: string, attrContent: string}}} options
+   * @returns
+   */
+  createElemet(options) {
+    // console.log("🚀 ~ createElemet ~ options:", options);
+    const { tag, className, innerHTML, attr: attr } = options;
+    const el = document.createElement(tag);
+    el.classList.add(className);
+    el.textContent = innerHTML;
+    if (attr) el.setAttribute(attr.attrName, attr.attrContent);
+    return el;
   }
 }

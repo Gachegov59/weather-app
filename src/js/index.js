@@ -3,11 +3,12 @@ import { Model } from "./model.js";
 import { View } from "./view.js";
 
 const model = new Model();
-const view = new View();
-const app = new Controller(view, model);
+const dummyView = {};
+const controller = new Controller(dummyView, model);
 
-view.setController(app)
+const view = new View(controller);
+controller.view = view;
 
 document.addEventListener("DOMContentLoaded", () => {
-  app.init();
+  controller.init();
 });

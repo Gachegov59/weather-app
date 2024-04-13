@@ -1,3 +1,6 @@
+import { ENV } from "../config/consts.js";
+import { getCityAutocomplete } from "../api/getCityAutocomplite.js";
+import { mockLocationsData } from "../mocks/apiLcations.js";
 import { Controller } from "./controller.js";
 /**
  * @class Model
@@ -20,8 +23,21 @@ export class Model {
   get activeNavElement() {
     return this.NAV.ACTIVE;
   }
-
-  getCityesData(city) {
+  /**
+   * @returns {object}
+   */
+  async getCityesData(city) {
     console.log("getCityesData--***", city);
+
+    if (ENV.DEVELOPER_MODE) {
+      return mockLocationsData;
+    }
+    try {
+      const data = await getCityAutocomplete(city);
+      // console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch data: ", error);
+    }
   }
 }

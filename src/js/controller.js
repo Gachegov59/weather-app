@@ -1,7 +1,8 @@
+import { ENV } from "../config/consts.js";
 import { View } from "./view.js";
 import { Model } from "./model.js";
 import { debounce } from "../helpers/debounce.js";
-// import types from "../types/types.js";
+
 
 /**
  * @class Controller
@@ -15,6 +16,10 @@ export class Controller {
   constructor(view, model) {
     this.model = model;
     this.view = view;
+    this.debouncedCitySearch = debounce(
+      this.model.getCityesData.bind(this.model),
+      ENV.INPUT_DELAY
+    );
   }
 
   init() {
@@ -26,19 +31,24 @@ export class Controller {
   /**
    * @param {string} cityStr
    */
-  inputCityChange(cityStr) {
-    if (!this.varlidateInput(cityStr, "string")) return
-    const debauncedInput = debounce(this.model.getCityesData, 500);
-    debauncedInput(cityStr)
+  async inputCityChange(cityStr) {
+    if (!this.varlidateInput(cityStr, "string")) return;
+    
+    try {
+      const data = await this.debouncedCitySearch(cityStr);
+      // console.log(data);
+      this.view.renderInputResult(data);
+    } catch (error) {
+      console.error("Error fetching city data:", error);
+    }
   }
 
   /**
    * @param {string} cityStr
    * @param {string} type
    */
-  varlidateInput(value, type) {
+  async varlidateInput(value, type) {
     // todo: check for - Searching should be done in English letters only
-    // console.log("🚀~ varlidateInput:");
     if (typeof value === type) {
       return true;
     } else {
