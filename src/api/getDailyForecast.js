@@ -2,12 +2,15 @@ import { ENV } from "../config/consts.js";
 
 const BASE_API_URL = ENV.BASE_API_URL;
 const API_KEY = ENV.API_KEY;
+
 /**
- * @param {string} cityStr
+ * @param {string} locationKey
+ * @param {1 | 5} daysAmount
  * @returns {Promise}
  */
-export function getCityAutocomplete(cityStr) {
-  const url = `${BASE_API_URL}/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${cityStr}`;
+export function getDailyForecast(locationKey, daysAmount = 1) {
+  const url = `${BASE_API_URL}/forecasts/v1/daily/${daysAmount}day/${locationKey}?apikey=${API_KEY}`;
+
   return fetch(url)
     .then((response) => {
       if (!response.ok) {
@@ -16,6 +19,6 @@ export function getCityAutocomplete(cityStr) {
       return response.json();
     })
     .catch((error) => {
-      console.error("Error while fetvhing data cityes: ", error);
+      console.error("Error fetching the weather data:", error);
     });
 }

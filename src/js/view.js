@@ -56,17 +56,17 @@ export class View {
       this.ELEMENT_SELECTORS.INPUT_SEARCH
     );
     inputSeacrh.addEventListener("input", (e) =>
-      this.controller.inputCityChange(e.target.value)
+      this.controller.inputCityChange(e.target.value.trim())
     );
   }
-  renderInputResult(data) {
-    console.log(data);
+  renderInputResult(sityesArray) {
+    console.log(sityesArray);
     const inputResultEl = this.createElemet({
       tag: "div",
       className: "input-result",
     });
 
-    data.forEach((sity) => {
+    sityesArray.forEach((sity) => {
       const cityItemEl = this.createElemet({
         tag: "div",
         className: "input-result__item",
@@ -89,7 +89,7 @@ export class View {
       inputResultEl.appendChild(cityItemEl);
 
       cityItemEl.addEventListener("click", () => {
-        this.controller.getCityWheater(sity.Key);
+        this.controller.getCityWheater(Number(sity.Key), 5);
       });
     });
     this.sectionEl.querySelector(".input-group").appendChild(inputResultEl);
@@ -99,16 +99,15 @@ export class View {
       const inputEl = this.sectionEl.querySelector(".input");
       if (inputGroupEl.contains(inputResultEl))
         inputGroupEl.removeChild(inputResultEl);
-        inputEl.value = "";
+      inputEl.value = "";
     });
   }
 
   /**
    * @param {{tag: string, className: string, innerHTML: string, attr?: {attrName: string, attrContent: string}}} options
-   * @returns
+   * @returns {HTMLElement}
    */
   createElemet(options) {
-    // console.log("🚀 ~ createElemet ~ options:", options);
     const { tag, className, innerHTML, attr: attr } = options;
     const el = document.createElement(tag);
     el.classList.add(className);

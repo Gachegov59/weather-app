@@ -3,7 +3,6 @@ import { View } from "./view.js";
 import { Model } from "./model.js";
 import { debounce } from "../helpers/debounce.js";
 
-
 /**
  * @class Controller
  * Controller for aplication
@@ -20,6 +19,10 @@ export class Controller {
       this.model.getCityesData.bind(this.model),
       ENV.INPUT_DELAY
     );
+    this.debouncedDailyForecast = debounce(
+      this.model.getDailyForecast.bind(this.model),
+      ENV.INPUT_DELAY
+    );
   }
 
   init() {
@@ -33,7 +36,7 @@ export class Controller {
    */
   async inputCityChange(cityStr) {
     if (!this.varlidateInput(cityStr, "string")) return;
-    
+
     try {
       const data = await this.debouncedCitySearch(cityStr);
       // console.log(data);
@@ -44,15 +47,34 @@ export class Controller {
   }
 
   /**
+   * @param {string} locationKey
+   * @param {1 | 5} daysAmount
+   * @returns {Promise}
+   */
+  async getCityWheater(locationKey, daysAmount = 5) {
+    if (!this.varlidateInput(locationKey, "number")) return;
+    
+    try {
+      const data = await this.debouncedDailyForecast(locationKey,daysAmount);
+      console.log(data);
+      // this.view.renderInputResult(data);
+    } catch (error) {
+      console.error("Error fetching daily forecast:", error);
+    }
+  }
+
+  /**
    * @param {string} cityStr
    * @param {string} type
    */
   async varlidateInput(value, type) {
+    console.log("🚀   varlidateInput:", typeof value)
     // todo: check for - Searching should be done in English letters only
+  
     if (typeof value === type) {
       return true;
     } else {
-      alert("You enter wrong value");
+      console.error("Error fetching daily forecast:", typeof value);
     }
   }
 }
