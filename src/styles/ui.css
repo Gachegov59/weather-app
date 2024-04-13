@@ -1,0 +1,70 @@
+.header {
+  padding: 10px;
+  height: 50px;
+  background: var(--green);
+  display: flex;
+  justify-content: center;
+}
+
+.nav__list {
+  display: flex;
+}
+.nav__item {
+  margin-right: 15px;
+  list-style: none;
+}
+.nav__item._active {
+  color: var(--orange);
+}
+
+.btn {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  background: #1abc9c;
+  border: 1px solid var(--white);
+  color: var(--white);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: var(--base-transition);
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.btn:hover svg {
+  scale: 1.2;
+}
+.btn svg {
+  margin-right: 5px;
+  width: 15px;
+  transition: var(--base-transition);
+}
+.btn svg path {
+  fill: var(--white);
+}
+.btn._active {
+  background: var(--white);
+  color: var(--green);
+}
+.btn._active svg path {
+  fill: var(--green);
+}
+
+.input {
+  padding: 5px;
+  border: 1px solid var(--black);
+  border-radius: 5px;
+}
+.input::-moz-placeholder {
+  color: var(--green);
+}
+.input::placeholder {
+  color: var(--green);
+}
+.input:focus {
+  outline: none;
+}
+
+.search-weather {
+  margin: auto;
+}/*# sourceMappingURL=ui.css.map */

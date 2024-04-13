@@ -1,24 +1,27 @@
-// import { View } from "./view.js";
-// import { Model } from "./model.js";
+import { Controller } from "./controller.js";
 /**
  * @class Model
  * Menages the data for the application / communicates with the controller
  */
 export class Model {
   /**
-   * @param {View} view
-   * @param {Model} model
+   * @param {Controller} Controller
    */
   NAV = {
     ACTIVE: "home",
   };
 
-  constructor() {}
-
+  constructor(controller) {
+    this.controller = controller;
+  }
   /**
-   * @returns 'home' | 'favorites'
+   * @returns {'home' | 'favorites'}
    */
   get activeNavElement() {
     return this.NAV.ACTIVE;
+  }
+
+  getCityesData(city) {
+    console.log("getCityesData--***", city);
   }
 }
