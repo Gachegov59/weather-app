@@ -84,6 +84,8 @@
   flex-direction: column;
   width: 100%;
   border: 1px solid var(--green);
+  max-height: 200px;
+  overflow-y: scroll;
 }
 .input-result__item {
   padding: 5px;
@@ -100,6 +102,15 @@
 .input-result__country {
   font-weight: bold;
   color: var(--black);
+}
+.input-result::-webkit-scrollbar {
+  width: 2px;
+}
+.input-result::-webkit-scrollbar-thumb {
+  background: var(--turquoise);
+}
+.input-result::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .weather {

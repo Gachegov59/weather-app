@@ -30,7 +30,14 @@ export class View {
   mount(activeNavElemet) {
     this.renderNavElemetns(activeNavElemet);
   }
-
+  clearResult() {
+    const inputGroupEl = this.sectionSearchEl.querySelector(".input-group");
+    const inputEl = this.sectionSearchEl.querySelector(".input");
+    const inputResultEl = this.sectionSearchEl.querySelector(".input-result");
+    if (!inputGroupEl.contains(inputResultEl)) return
+    inputResultEl.remove()
+    inputEl.value = "";
+  }
   renderNavElemetns(activeNavElemet) {
     this.headerEl.innerHTML = navComponent;
 
@@ -49,6 +56,7 @@ export class View {
   renderFavoritePage() {
     document.title = ENV.PAGES_TITLES.FAVORITES;
     this.sectionSearchEl.innerHTML = "";
+    this.sectionWeatherEl.innerHTML = "";
   }
   renderHomePage() {
     document.title = ENV.PAGES_TITLES.HOME;
@@ -56,12 +64,19 @@ export class View {
     const inputSeacrh = this.sectionSearchEl.querySelector(
       this.ELEMENT_SELECTORS.INPUT_SEARCH
     );
-    inputSeacrh.addEventListener("input", (e) =>
-      this.controller.inputCityChange(e.target.value.trim())
-    );
+    inputSeacrh.addEventListener("input", (e) => {
+      const inputSrt = e.target.value.trim();
+      if (inputSrt.length < 1) {
+        this.clearResult();
+        return;
+      }
+      this.controller.inputCityChange(inputSrt);
+    });
   }
+
   renderInputResult(sityesArray) {
     console.log(sityesArray);
+    document.querySelector(".input-result")?.remove()
     const inputResultEl = this.createElemet({
       tag: "div",
       className: "input-result",
@@ -98,29 +113,18 @@ export class View {
       .appendChild(inputResultEl);
 
     this.bodyEl.addEventListener("click", (e) => {
-      const inputGroupEl = this.sectionSearchEl.querySelector(".input-group");
-      const inputEl = this.sectionSearchEl.querySelector(".input");
-      if (inputGroupEl.contains(inputResultEl))
-        inputGroupEl.removeChild(inputResultEl);
-      inputEl.value = "";
+      this.clearResult();
     });
   }
   renderWeatherResult(weatherObject) {
     const { DailyForecasts: dailyForecastsArray, Headline: headline } =
       weatherObject;
-
-    console.log(
-      "🚀 ~ View ~ renderWeatherResult ~ weatherArray:",
-      weatherObject
-    );
-    
     const weatherItemsEl = this.createElemet({
       tag: "div",
       className: "weather-wrap",
     });
 
     dailyForecastsArray.forEach((dayForecast) => {
-
       const weatherCard = this.createElemet({
         tag: "div",
         className: "card",
