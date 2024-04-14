@@ -1,0 +1,11 @@
+.footer {
+  height: 70px;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer .copyright {
+  font-size: 20px;
+  color: var(--white);
+}/*# sourceMappingURL=footer.css.map */

@@ -1,0 +1,42 @@
+:root {
+  --white: #fff;
+  --black: #000;
+  --orange: #f05514;
+  --green: #2ecc71;
+  --turquoise: #1abc9c;
+  --transition-base: all 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+section {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}/*# sourceMappingURL=base.css.map */
