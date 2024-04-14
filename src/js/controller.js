@@ -45,7 +45,7 @@ export class Controller {
       console.error("Error fetching city data:", error);
     }
   }
-
+  // todo: create general method handling request error
   /**
    * @param {string} locationKey
    * @param {1 | 5} daysAmount
@@ -57,7 +57,7 @@ export class Controller {
     try {
       const data = await this.debouncedDailyForecast(locationKey,daysAmount);
       console.log(data);
-      // this.view.renderInputResult(data);
+      this.view.renderWeatherResult(data);
     } catch (error) {
       console.error("Error fetching daily forecast:", error);
     }

@@ -42,6 +42,8 @@ export class Model {
       console.error("Failed to fetch data: ", error);
     }
   }
+
+  // todo: create general method handling request error
   async getDailyForecast(cityKey, daysAmount) {
     console.log("getCityesData--***", cityKey);
 

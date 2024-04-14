@@ -98,6 +98,7 @@
     flex-direction: column;
     width: 100%;
     border: 1px solid var(--green);
+
     &__item {
         padding: 5px;
         cursor: pointer;
@@ -105,13 +106,44 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
         &:hover {
             background: var(--green);
             color: var(--white);
         }
     }
+
     &__country {
         font-weight: bold;
         color: var(--black);
+    }
+}
+
+.weather {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.weather-wrap {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.card {
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+    font-size: 18px;
+    border: 1px solid var(--green);
+    background: var(--turquoise);
+    color: var(--white);
+    &__date {
+        color: var(--black);
+        font-weight: bold;
+    }
+    &__temperature {
+        // color: var(--orange);
     }
 }

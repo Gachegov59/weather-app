@@ -2,6 +2,7 @@ import { ENV } from "../config/consts.js";
 import { navComponent } from "../components/navComponent.js";
 import { searchWheaterComponent } from "../components/searchWheaterComponent.js";
 import { Controller } from "./controller.js";
+
 /**
  * @class View
  * Manages the user interface / communicates with the controller
@@ -12,7 +13,8 @@ export class View {
     INPUT_SEARCH: "[data-input]",
   };
   headerEl = document.querySelector(".header");
-  sectionEl = document.querySelector(".section");
+  sectionSearchEl = document.querySelector(".section", ".search");
+  sectionWeatherEl = document.querySelector(".weather");
   bodyEl = document.querySelector("body");
   /**
    * @param {Controller} controller
@@ -45,14 +47,13 @@ export class View {
     });
   }
   renderFavoritePage() {
-    // todo: pageNames to const
     document.title = ENV.PAGES_TITLES.FAVORITES;
-    this.sectionEl.innerHTML = "";
+    this.sectionSearchEl.innerHTML = "";
   }
   renderHomePage() {
     document.title = ENV.PAGES_TITLES.HOME;
-    this.sectionEl.innerHTML = searchWheaterComponent;
-    const inputSeacrh = this.sectionEl.querySelector(
+    this.sectionSearchEl.innerHTML = searchWheaterComponent;
+    const inputSeacrh = this.sectionSearchEl.querySelector(
       this.ELEMENT_SELECTORS.INPUT_SEARCH
     );
     inputSeacrh.addEventListener("input", (e) =>
@@ -92,17 +93,63 @@ export class View {
         this.controller.getCityWheater(Number(sity.Key), 5);
       });
     });
-    this.sectionEl.querySelector(".input-group").appendChild(inputResultEl);
+    this.sectionSearchEl
+      .querySelector(".input-group")
+      .appendChild(inputResultEl);
 
     this.bodyEl.addEventListener("click", (e) => {
-      const inputGroupEl = this.sectionEl.querySelector(".input-group");
-      const inputEl = this.sectionEl.querySelector(".input");
+      const inputGroupEl = this.sectionSearchEl.querySelector(".input-group");
+      const inputEl = this.sectionSearchEl.querySelector(".input");
       if (inputGroupEl.contains(inputResultEl))
         inputGroupEl.removeChild(inputResultEl);
       inputEl.value = "";
     });
   }
+  renderWeatherResult(weatherObject) {
+    const { DailyForecasts: dailyForecastsArray, Headline: headline } =
+      weatherObject;
 
+    console.log(
+      "🚀 ~ View ~ renderWeatherResult ~ weatherArray:",
+      weatherObject
+    );
+    
+    const weatherItemsEl = this.createElemet({
+      tag: "div",
+      className: "weather-wrap",
+    });
+
+    dailyForecastsArray.forEach((dayForecast) => {
+
+      const weatherCard = this.createElemet({
+        tag: "div",
+        className: "card",
+      });
+
+      const weatherDate = this.createElemet({
+        tag: "div",
+        className: "card__date",
+        innerHTML: `${moment(dayForecast.Date).format("DD MMMM YYYY")}`,
+      });
+
+      const weatherInfo = this.createElemet({
+        tag: "div",
+        className: "card__info",
+        innerHTML: `${dayForecast.Day.IconPhrase}`,
+      });
+
+      const weatherTemperature = this.createElemet({
+        tag: "div",
+        className: "card__temperature",
+        innerHTML: `${dayForecast.Temperature.Maximum.Value} F`,
+      });
+
+      weatherCard.appendChild(weatherDate);
+      weatherCard.appendChild(weatherInfo);
+      weatherCard.appendChild(weatherTemperature);
+      this.sectionWeatherEl.appendChild(weatherCard);
+    });
+  }
   /**
    * @param {{tag: string, className: string, innerHTML: string, attr?: {attrName: string, attrContent: string}}} options
    * @returns {HTMLElement}

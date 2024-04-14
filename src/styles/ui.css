@@ -100,4 +100,29 @@
 .input-result__country {
   font-weight: bold;
   color: var(--black);
+}
+
+.weather {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.weather-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.card {
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  font-size: 18px;
+  border: 1px solid var(--green);
+  background: var(--turquoise);
+  color: var(--white);
+}
+.card__date {
+  color: var(--black);
+  font-weight: bold;
 }/*# sourceMappingURL=ui.css.map */

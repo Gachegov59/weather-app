@@ -1,5 +1,5 @@
 export const ENV = {
-  DEVELOPER_MODE: false,
+  DEVELOPER_MODE: true,
   BASE_API_URL: "http://dataservice.accuweather.com",
   API_KEY: "dlAnXm3KH7nc7jkOKuTt6kXNNoeewsuG",
   DEFAULT_CITY_KEY: "215854",
